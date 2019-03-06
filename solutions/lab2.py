@@ -1,58 +1,85 @@
-# from decimal import *
-# import math
+from cs50 import get_int
 import numpy as np
+from decimal import Decimal
 import matplotlib.pyplot as plt
-# #TASKS (4p)
+from mpl_toolkits.mplot3d import Axes3D
 #
-# #1 calculate & print the value of function y = 2x^2 + 2x + 2 for x=[56, 57, ... 100] (0.5p)
+# # TASKS (8p)- calculate & print:
+# print('#0 Use alternative way of reading inputs - using library (0.5p)\n')
 #
-# print('#1')
-# print('zbiór liczb:')
-# x = [i for i in range(56,101)]
-# print(x)
-# print('wartości funkcji:')
-# y = [2*i**2 + 2*i + 2 for i in x]
-# print(y,'\n')
+# x = get_int("radius of first circle (X): ")
+# y = get_int("radius of second circle (Y): ")
 #
-# #2 ask the user for a number and print its factorial (1p)
 #
-# a = input('podaj liczbę naturalną: ')
-# print(a.isdigit())
-# if a.isdigit():
-#     a = int(a)
-#     fact = math.factorial(a)
-#     print(fact)
+# print('\n#1 Perimeter & field of circles with given radius X for the first circle & Y for the second one. (1p)')
+#
+# if x >= 0 and y >= 0:
+#     print('\nperimeter of first circle: ', 2*np.pi*x)
+#     print('perimeter of second circle: ', 2*np.pi*y)
+#     print('field of first circle: ', np.pi*x**2)
+#     print('field of second circle: ', np.pi*y**2)
 # else:
-#     print('podana wartość jest nieprawidłowa')
-
-#3 write a function which takes an array of numbers as an input and finds the lowest value. Return the index of that element and its value (1p)
+#     print('x lub y nie jest liczbą dodatnią')
 #
-# lista = np.array([[2,3,4,5,1], [2,1,4,5,6]])
-# def min_arr(lista):
-#     in_min = lista.min()
-#     element = np.where(lista == in_min)
-#     return(element, in_min)
-# print(min_arr(lista)[0])
-# value = min_arr[1]
-# indexes = np.array(minn_arr[0]).T
+# print('\n#2 Find X & Y that satisfy: X is divisible by Y and both X & Y are even. (0.5p)\n')
+
+# x = 6
+# y = 2
+# print('X =', x)
+# print('Y =', y)
+# x = 1
+# y = 1
+# while not(x%2 == 0 and y%2 == 0 and x%y == 0):
+#     x = np.random.randint(100)
+#     y = np.random.randint(100)
+#     print(x,y)
+
+# print("""\n#3 Check if X is divisible by Y (do it in one line of code), print 'X is divisible by Y' or 'X is not divisible by Y'. (1p)
+# Ad 3 Hint- use the "ternary operator" as we did calculating xIsEvenLog above.\n""")
 #
-# print("Value: ", value)
-# print("\nIndex list: \n", indexes)
+# print('X is divisible by Y' if x % y == 0 else 'X is not divisible by Y')
+#
+# print('\n#4 Add rounding for the above x/y operation. Round to 2 decimal points. Hint: look up in Google "python limiting number of decimals". (1p)')
+# print('In case of task 4  do not forget to round to different amount of decimals and see if it still works.(3p)\n')
+#
+# div1 = Decimal(x/y)
+# div1 = round(div1,2)
+# print(div1)
+#
+# print("""\n#5 Look at lab2-plot.py and create your own script which takes a number as an input and plots the same 3D wave but with different characteristics
+# it's totally up to your imagination how do you want to amend the figure according to the input number (1p)\n""")
 
-#4 looking at lab1-input and lab1-plot files create your own python script that takes a number and returns any chart of a given length.
-#the length of a chart is the input to your script. The output is a plot (it doesn't matter if it's a y=x or y=e^x+2x or y=|x| function, use your imagination)
-#test your solution properly. Look how it behaves given different input values. (1p)
+# 1 - extension of range of a domain of a function
+# 2 - opposite function
+# 3 - R is calculated by different formula
 
-a = input('wpisz licbę punktów (liczba całkowita): ')
-a = int(a)
-x = np.random.rand(a)*10
-print(x)
-x = np.sort(x)
-print(x)
-y = [a**3 for a in x]
-plt.plot(x,y)
+choice = get_int()
+choice = int(choice)
+a = 1
+b = 1
+
+if choice == 1:
+    a = 2
+    x_knots = np.linspace(a * (-3 * np.pi), a * (3 * np.pi), 201)
+    y_knots = np.linspace(a * (-3 * np.pi), a * (3 * np.pi), 201)
+    X, Y = np.meshgrid(x_knots, y_knots)
+    R = np.sqrt(X ** 2 + Y ** 2)
+elif choice == 2:
+    x_knots = np.linspace(a * (-3 * np.pi), a * (3 * np.pi), 201)
+    y_knots = np.linspace(a * (-3 * np.pi), a * (3 * np.pi), 201)
+    X, Y = np.meshgrid(x_knots, y_knots)
+    R = (X**2+Y**2)/2
+elif choice == 3:
+    x_knots = np.linspace(a * (-3 * np.pi), a * (3 * np.pi), 201)
+    y_knots = np.linspace(a * (-3 * np.pi), a * (3 * np.pi), 201)
+    X, Y = np.meshgrid(x_knots, y_knots)
+    R = np.sqrt(X ** 2 + Y ** 2)
+    b = -1
+
+Z = np.cos(R)**2*np.exp(-0.1*R)*b
+ax = Axes3D(plt.figure(figsize=(8,5)))
+ax.plot_surface(X, Y, Z, rstride=1, cstride=1, cmap=plt.cm.coolwarm, linewidth=0.4)
 plt.show()
+#
+# print('\n#6 Test your code. Check various edge cases. In other words: does your program (1, 3, 4 & 5)work for all input values?\n')
 
-
-#5 upload the solution as a Github repository. I suggest creating a directory for the whole python course and subdirectories lab1, lab2 etc. (0.5p)
-#Ad 5 Hint write in Google "how to create a github repo". There are plenty of tutorials explaining this matter.
